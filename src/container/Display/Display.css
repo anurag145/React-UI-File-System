@@ -1,0 +1,8 @@
+.content2{
+    display: flex;
+    height: 100%;
+    flex-wrap: wrap;
+    width: auto ;
+    overflow-x: hidden;
+   
+}

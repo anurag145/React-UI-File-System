@@ -1,0 +1,9 @@
+.content3{
+    margin-left:210px; 
+    display: inline;
+}
+@media(max-width:320px){
+    .content3{
+        margin-left: 20px;
+    }
+}

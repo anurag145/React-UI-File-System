@@ -1,0 +1,19 @@
+.QuickAccess{
+    height: 100%;
+    width: 200px ;
+    position: fixed;    
+    background-color: #f9fafc;
+    overflow-x: hidden;
+
+   
+}
+@media(max-width:320px){
+    .QuickAccess{
+        display: none;
+    }
+}
+
+.content4{
+    margin-left: 20px;
+    display: inline;
+}

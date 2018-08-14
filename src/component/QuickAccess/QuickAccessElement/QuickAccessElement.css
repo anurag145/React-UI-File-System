@@ -1,0 +1,35 @@
+.content{
+ margin:5px 15px 0px 30px;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+
+}
+
+.arrow-down {
+ 
+    
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #2c3339;
+  }
+
+  .sub-menu{
+    
+    width:auto;
+    height: auto;
+    padding-left: 5px;
+    margin: -25px 0 0 35px;  
+   
+    box-shadow: -1px 0 rgba(0,0,0,0.2);
+  }
+  
+  .arrow-up{
+    width: 0; 
+    height: 0; 
+   
+    margin-top: 18px;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid #2c3339;
+  }
