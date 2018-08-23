@@ -1,33 +1,58 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
+import Folder from '../../component/DisplayItems/Folder/Folder';
+import File from '../../component/DisplayItems/File/File';
+import AddItem from '../../component/DisplayItems/AddItem';
+import Modal from '../../component/Modal/Modal';
+import AddContent from '../AddContent/AddContent';
 import './Display.css';
 class Display extends Component{
+state={
+    0:"root",
+    show:false,
+    type:"info"
+}
+onCancelModal=()=>{
     
+    this.setState({show:false})
+}
+ onDoubleClickHandler=(path)=>{
+     console.log(path);
+ }
+ onAddClickHandler=()=>{
+     
+    this.setState({show:true,type:"addFile"})
+ }   
     render(){
+      console.log(this.props.state)
+         let displayModal=null;
+         if(this.state.show){
+             if(this.state.type==='addFile')
+             {
+                 displayModal= <AddContent clicked={this.onCancelModal}/>;
+                   }
+         }
         const val =this.props.display;
-        let file =[];
-        let folder=[];
-        val.folder.map(el=>{
-           return folder.push( <div>
-                 <i className="fa fa-folder fa-5x" style={{marginRight:"5px"}}></i>
-                 <p style={{marginTop:'-5px'}}>{el}</p>
-             </div>)
+        const folder= val.folder.map(el=>{
+           return <Folder key={el} name={el} clicked={this.onDoubleClickHandler}/>
         });
-
-        val.file.map(el=>{
-        return file.push(
-            <div>
-            <i className="fa fa-file fa-5x"></i>
-            <p style={{marginTop:'-5px'}}>{el}</p>
-        </div>)
-         
+        const file = val.file.map(el=>{
+        return  <File key={el} name={el}/>
         });
+        
         return (
-             <div className='content2' >
+
+
+            <div>  
+             <Modal show={this.state.show}>{displayModal}</Modal>
+            <div className='content2' >
              {folder}
              {file}
-                
+             <AddItem clicked={this.onAddClickHandler}/>   
              </div>
+             </div>
+
+
 
         );
     }
@@ -35,6 +60,7 @@ class Display extends Component{
 
 const mapStateToProps=state=>{
     return{
+     state:state,   
      display:state.display
     };
 };

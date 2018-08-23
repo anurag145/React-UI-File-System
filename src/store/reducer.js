@@ -1,25 +1,59 @@
+import * as actionTypes from './actionTypes';
 const initialState={
+    
     pathDisplay:"root",
-        root:{
-          file:{"index.html":{size:"520 kb", cName:"Anurag", cDate:"27-Aug-2018"}},
-          folder:{ "Music":{ info:{ size:"520 kb",cName:"Anurag",cDate:"27-Aug-2018"},
-                 path:"root/Music",
-                 FolderItems:{}
-             },
-             "System":{ info:{ size:"520 kb",cName:"Anurag",cDate:"27-Aug-2018"},
-                 path:"root/Music",
-                 FolderItems:{}
-             } 
-            }
-        },
+    
       display:{
-          file:["index.html"],
-          folder:["Music","System","Music","System","Music","System","Music","System","Music","System","Music","System","Music","System"]
+          file:[],
+          folder:[]
       }  
     };
+const addItem=(state,value)=>{
+ console.log(value);
+const path = state.pathDisplay;
+const level= (path.match(/\//g)||[]).length;
+if(state[level])
+{   
+    let updatedStateLevel= {...state[level]};
+    let typeHandler= {...updatedStateLevel[value.type]}
+    if(!typeHandler[value.name])
+    {
+         typeHandler[value.name]={
+             info:{
+                 size:value.size,
+                 creator:value.creator,
+                 date:value.date
+             }
+         }
+        updatedStateLevel[value.type]=typeHandler
+         return {...state,[level]:updatedStateLevel}
+    }
+    
+}else{
+    return {
+        ...state,
+        [level]:{
+            [value.type]:{
+                [value.name]:{
+                    info:{
+                        size:value.size,
+                        creator:value.creator,
+                        date:value.date
+                    }
+                }
+            }
+        }
+    }
+}
+return state;
+}    
     
 const reducer=(state=initialState,action)=>{
-return state;
+    switch(action.type){
+        case actionTypes.ADD_ITEM:
+         return addItem(state,action.addContent)
+         default: return state;
+    }
 }
 
 export default reducer;
