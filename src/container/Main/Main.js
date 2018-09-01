@@ -4,10 +4,12 @@ import {connect} from 'react-redux';
 import Display from '../Display/Display';
 import TopBar from '../../component/TopBar/TopBar';
 import './Main.css';
+import * as actions from '../../store/index';
 class Main extends Component{
 
-upOneDirectory(){
-    console.log("hello");
+upOneDirectory=()=>{
+    console.log(this.props.pathDisplay);
+    this.props.goUpOneDirectory();
 }
 
     render(){
@@ -32,5 +34,10 @@ const mapStateToProps=state=>{
        root:state.root
     };
 }
+const mapDispatchToProps= dispatch=>{
+    return{
+        goUpOneDirectory:()=>dispatch(actions.upOneDirectory())
+    };
+};
 
-export default connect(mapStateToProps)(Main);
+export default connect(mapStateToProps,mapDispatchToProps)(Main);

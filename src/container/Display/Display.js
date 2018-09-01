@@ -1,10 +1,10 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
-import Folder from '../../component/DisplayItems/Folder/Folder';
-import File from '../../component/DisplayItems/File/File';
+import Items from '../../component/DisplayItems/Items/Items';
 import AddItem from '../../component/DisplayItems/AddItem';
 import Modal from '../../component/Modal/Modal';
 import AddContent from '../AddContent/AddContent';
+import * as actions from '../../store/index';
 import './Display.css';
 class Display extends Component{
 state={
@@ -16,29 +16,35 @@ onCancelModal=()=>{
     
     this.setState({show:false})
 }
- onDoubleClickHandler=(path)=>{
-     console.log(path);
+ onDoubleClickHandler=(Id)=>{
+     console.log(Id);
+     this.props.handleDoubleClick(Id);
  }
  onAddClickHandler=()=>{
      
     this.setState({show:true,type:"addFile"})
  }   
     render(){
-      console.log(this.props.state)
+      console.log(this.state)
          let displayModal=null;
          if(this.state.show){
              if(this.state.type==='addFile')
              {
-                 displayModal= <AddContent clicked={this.onCancelModal}/>;
+                 displayModal= <AddContent parent={this.props.parent} clicked={this.onCancelModal}/>;
                    }
          }
-        const val =this.props.display;
-        const folder= val.folder.map(el=>{
-           return <Folder key={el} name={el} clicked={this.onDoubleClickHandler}/>
-        });
-        const file = val.file.map(el=>{
-        return  <File key={el} name={el}/>
-        });
+        let val =this.props.display;
+        console.log(this.props.main)
+        const items= [];
+        val.map(el=>{
+            if(this.props.main[el].type==='folder')
+           items.push( <Items key={el} id={el} name={this.props.main[el].name} 
+            type={this.props.main[el].type} clicked={this.onDoubleClickHandler}/>)
+            else
+            items.unshift( <Items key={el} id={el} name={this.props.main[el].name} 
+                type={this.props.main[el].type} clicked={this.onDoubleClickHandler}/>)
+            return el;
+         });    
         
         return (
 
@@ -46,8 +52,7 @@ onCancelModal=()=>{
             <div>  
              <Modal show={this.state.show}>{displayModal}</Modal>
             <div className='content2' >
-             {folder}
-             {file}
+             {items}
              <AddItem clicked={this.onAddClickHandler}/>   
              </div>
              </div>
@@ -60,8 +65,14 @@ onCancelModal=()=>{
 
 const mapStateToProps=state=>{
     return{
-     state:state,   
-     display:state.display
+     display:state.display,
+     main:state,
+     parent:state.parent
     };
 };
-export default connect(mapStateToProps)(Display);
+const mapDispatchToProps=dispatch=>{
+    return {
+     handleDoubleClick :(Id)=>dispatch(actions.enterPath(Id))
+    };
+};
+export default connect(mapStateToProps,mapDispatchToProps)(Display);

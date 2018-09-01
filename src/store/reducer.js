@@ -1,57 +1,98 @@
 import * as actionTypes from './actionTypes';
+import generator from './guidGenerator';
+
+
 const initialState={
     
     pathDisplay:"root",
-    
-      display:{
-          file:[],
-          folder:[]
-      }  
+         rootList:[],        
+         display:[],
+         parent:null
     };
+
 const addItem=(state,value)=>{
- console.log(value);
-const path = state.pathDisplay;
-const level= (path.match(/\//g)||[]).length;
-if(state[level])
-{   
-    let updatedStateLevel= {...state[level]};
-    let typeHandler= {...updatedStateLevel[value.type]}
-    if(!typeHandler[value.name])
-    {
-         typeHandler[value.name]={
-             info:{
-                 size:value.size,
-                 creator:value.creator,
-                 date:value.date
-             }
-         }
-        updatedStateLevel[value.type]=typeHandler
-         return {...state,[level]:updatedStateLevel}
-    }
-    
-}else{
-    return {
-        ...state,
-        [level]:{
-            [value.type]:{
-                [value.name]:{
-                    info:{
-                        size:value.size,
-                        creator:value.creator,
-                        date:value.date
-                    }
-                }
+   
+    if(value.parent){
+        let updateParent=state[value.parent];
+         const guid=generator();
+            updateParent.list.push(guid);
+        return {
+            ...state,
+            [value.parent]:updateParent,
+            [guid]:{...value,
+                  list:[]
             }
         }
+        
+    }else{
+        const guid=generator();
+            let updatedRoot=state.rootList
+            updatedRoot.push(guid)
+            return{
+                ...state,
+                display:updatedRoot,
+                rootList:updatedRoot,
+                [guid]:{...value,
+                list:[]
+            }
+            }
+
+    
+}
+    
+}
+const upOneDirectory=(state)=>{
+    
+    if(state.parent){
+        const val=state.parent;
+        const baseParent= state[val]
+        if(baseParent.parent===null){
+            return{
+                ...state,
+                display:state.rootList,
+                pathDisplay:'root',
+                parent:null
+            }
+        }else{
+            console.log(baseParent.parent)
+            const updateParent=baseParent.parent;
+            const updateDisplay=state[updateParent].list;
+            const updatePath=(state.pathDisplay).substr(0,(state.pathDisplay).lastIndexOf('/'))
+            return {
+                ...state,
+                display:updateDisplay,
+                pathDisplay:updatePath,
+                parent:updateParent
+            };
+        }
+        
+    
+    }else
+    {
+        alert("In root directory")
+        return state;
     }
 }
-return state;
-}    
+
+const enterPath=(state,value)=>{
+    return{
+          ...state,
+          display: state[value].list,
+          pathDisplay:state.pathDisplay+"/"+state[value].name,
+          parent:value
+    }
+   
+
+}
     
 const reducer=(state=initialState,action)=>{
     switch(action.type){
         case actionTypes.ADD_ITEM:
          return addItem(state,action.addContent)
+         case actionTypes.ENTER_PATH:
+         return enterPath(state,action.value)
+         case actionTypes.UP_ONE_DIRECTORY:
+         return upOneDirectory(state);
          default: return state;
     }
 }

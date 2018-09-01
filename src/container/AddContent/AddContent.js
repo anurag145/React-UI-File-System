@@ -3,37 +3,54 @@ import * as actions from '../../store/index';
 import {connect} from 'react-redux';
 class AddModal extends Component{
     state={
-        info:{
-        type:"file",
+        
+        type:"",
         name:"",
         size:"",
         creator:"",
         date:""
-    }
+    
     }
     onChangeHandler=(event,indentifier)=>{
      const updateVal={
-         ...this.state.info
+         ...this.state
      }
      
      updateVal[indentifier]=event.target.value;
-     this.setState({info:updateVal})
+     this.setState({...updateVal})
     }
 
     onCreateClicked=()=>{
-        console.log(this.state.info)
-        this.props.onCreateHandler(this.state.info);
+        console.log({
+            ...this.state,
+           parent: this.props.parent
+            
+        })
+        this.props.onCreateHandler({
+            ...this.state,
+           parent: this.props.parent
+            
+        });
+        
+        this.props.clicked();
   
     }
     render(){
         let content= [];
-           for(let key in this.state.info){
+        
+           for(let key in this.state){
+               
             if(key==="type")
-            {
+            {   const placeholderVal=key.charAt(0).toUpperCase()+key.slice(1);
                 content.push(
                 <div key={key} style={{display:"flex",justifyContent:'space-between'}}>
-                  <p >Hello</p>
-                  <p style={{cursor:"pointer"}} onClick={this.onCreateClicked}>X</p>
+                 <input 
+                key={key}
+                placeholder={placeholderVal}
+                onChange={(event)=>this.onChangeHandler(event,key)} 
+                value={this.state[key]}
+                />
+                  <p style={{cursor:"pointer"}} onClick={this.props.clicked}>X</p>
                 </div>
               )
             }else{
@@ -43,7 +60,7 @@ class AddModal extends Component{
                 key={key}
                 placeholder={placeholderVal}
                 onChange={(event)=>this.onChangeHandler(event,key)} 
-                value={this.state.info[key]}
+                value={this.state[key]}
                 />)
             }
            }
