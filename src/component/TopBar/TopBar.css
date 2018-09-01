@@ -1,9 +1,13 @@
 .TopBar{
     margin:15px 0 15px 20px; 
     display: flex;
+    position: fixed;
+    justify-content: space-evenly;
+    width:auto;
     
 }
 .Path{
     
+    font: 1.5em sans-serif;
     margin-left: 10px;
 }

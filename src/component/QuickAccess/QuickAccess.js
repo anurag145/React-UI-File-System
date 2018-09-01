@@ -2,25 +2,37 @@ import React,{Component} from 'react';
 import './QuickAccess.css';
 import { connect }from 'react-redux';
 import QuickAccessElement from './QuickAccessElement/QuickAccessElement';
+import * as actions from '../../store/index';
 class  QuickAccess extends Component{
 
+    arrowClicked=(Id)=>{
+    this.props.handler(Id);
+}
     render(){
-        let folder= this.props.folder;
-        console.log(this.props.folder);
-        let folderDisplay=[];
-        folderDisplay.push(<QuickAccessElement key={'root'} name={'root'}/>)
-        for(let key in folder)
-        {  
-            folderDisplay.push(
-            <QuickAccessElement key={key} name={key} />
-               );
-        }
-      //  let file=props.file;
+        let folder = this.props.rootList;
     return(
     <div className='QuickAccess'>
     <div className='content4'>
-        {folderDisplay}
+    <p key={'root'}>Root</p>
+        <div>
+          {  
+        folder.map(el=>{
+            if(this.props.state[el].type!=='file')
+            { 
+                let val={
+            ...this.props.state[el],
+            main:this.props.state,
+            id:el,
+            clicked:this.arrowClicked
+            }
+           return QuickAccessElement(val)
+            } 
         
+           else
+           return null
+        })
+       }
+        </div>
     </div>
     </div>
     );
@@ -28,7 +40,13 @@ class  QuickAccess extends Component{
 } 
 const mapStateToProps= state=>{
     return {
-        folder: state.root.folder
+        rootList: state.rootList,
+        state:state
     }
 }
-export default connect(mapStateToProps)(QuickAccess);
+const mapDispatchToProps=dispatch=>{
+    return{
+        handler:(Id)=>dispatch(actions.showSubMenu(Id))
+    }
+}
+export default connect(mapStateToProps,mapDispatchToProps)(QuickAccess);

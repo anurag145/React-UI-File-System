@@ -12,6 +12,15 @@ state={
     show:false,
     type:"info"
 }
+//functions 
+infoModal=(val)=>{
+console.log(val);
+}
+
+removeItem=(val)=>{
+    console.log(val);
+    this.props.remove(val);
+}
 onCancelModal=()=>{
     
     this.setState({show:false})
@@ -25,7 +34,7 @@ onCancelModal=()=>{
     this.setState({show:true,type:"addFile"})
  }   
     render(){
-      console.log(this.state)
+     console.log(this.props.main)
          let displayModal=null;
          if(this.state.show){
              if(this.state.type==='addFile')
@@ -34,15 +43,27 @@ onCancelModal=()=>{
                    }
          }
         let val =this.props.display;
-        console.log(this.props.main)
+     
         const items= [];
         val.map(el=>{
             if(this.props.main[el].type==='folder')
-           items.push( <Items key={el} id={el} name={this.props.main[el].name} 
-            type={this.props.main[el].type} clicked={this.onDoubleClickHandler}/>)
+           items.push( 
+           <Items key={el} 
+            id={el} name={this.props.main[el].name} 
+            type={this.props.main[el].type} 
+            clicked={this.onDoubleClickHandler}
+            info={this.infoModal}
+            remove={this.removeItem}
+            />)
             else
-            items.unshift( <Items key={el} id={el} name={this.props.main[el].name} 
-                type={this.props.main[el].type} clicked={this.onDoubleClickHandler}/>)
+            items.unshift( 
+            <Items key={el} 
+            id={el} 
+            name={this.props.main[el].name} 
+             type={this.props.main[el].type} 
+             clicked={this.onDoubleClickHandler}
+             info={this.infoModal}
+            remove={this.removeItem}/>)
             return el;
          });    
         
@@ -72,7 +93,8 @@ const mapStateToProps=state=>{
 };
 const mapDispatchToProps=dispatch=>{
     return {
-     handleDoubleClick :(Id)=>dispatch(actions.enterPath(Id))
+     handleDoubleClick :(Id)=>dispatch(actions.enterPath(Id)),
+     remove:(Id)=>dispatch(actions.deleteItem(Id))
     };
 };
 export default connect(mapStateToProps,mapDispatchToProps)(Display);

@@ -1,5 +1,5 @@
 import React,{Component} from'react';
-// import QuickAccess from '../../component/QuickAccess/QuickAccess';
+import QuickAccess from '../../component/QuickAccess/QuickAccess';
 import {connect} from 'react-redux';
 import Display from '../Display/Display';
 import TopBar from '../../component/TopBar/TopBar';
@@ -8,18 +8,25 @@ import * as actions from '../../store/index';
 class Main extends Component{
 
 upOneDirectory=()=>{
-    console.log(this.props.pathDisplay);
+    
     this.props.goUpOneDirectory();
+}
+
+onKeyUpHandler=(event)=>{
+  this.props.search(event.target.value);
 }
 
     render(){
         return(
          <div style={{display:'flex'}}>
-        {/* <QuickAccess data={this.props.root}/> */}
+        <QuickAccess />
         <div className="content3" >
-         <TopBar pathDisplay={this.props.pathDisplay} clicked={this.upOneDirectory}/>
+         <TopBar main={this.props.main}
+          clicked={this.upOneDirectory} 
+          listener={this.onKeyUpHandler}/>
+          <div style={{margin:"50px 0 0 50px"}}>
              <Display />
-         
+         </div>
          </div>
     
       
@@ -28,15 +35,17 @@ upOneDirectory=()=>{
     }
 }
 const mapStateToProps=state=>{
-    console.log(state.pathDisplay)
+  
     return{
-       pathDisplay:state.pathDisplay,
-       root:state.root
+       main:state, 
+       
+       
     };
 }
 const mapDispatchToProps= dispatch=>{
     return{
-        goUpOneDirectory:()=>dispatch(actions.upOneDirectory())
+        goUpOneDirectory:()=>dispatch(actions.upOneDirectory()),
+        search:(val)=>dispatch(actions.search(val))
     };
 };
 

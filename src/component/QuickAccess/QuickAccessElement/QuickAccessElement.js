@@ -1,26 +1,45 @@
 import React from 'react';
 import './QuickAccessElement.css';
-const quickAccessElement = (props)=>{
-    
-    // let form = props.val?quickAccessElement({val:false}): ' too';
-return (
 
-<div>
-   
-<div className="content">
+const element=(props)=>{
 
-<p > {props.name}</p>
-<div className='arrow-down'></div>
-</div>
-
-<div className="sub-menu">
-<p>Hello</p>
-<p>Hello</p>
-
-</div>
-       </div>
-
-
-);
+const clickHandler=()=>{
+ 
+    props.clicked(props.id);
 }
-export default quickAccessElement;
+
+    const child=props.list;
+    let subMenu=null;
+    let showArrow=child.length;
+    if(showArrow>0&&props.show===true)
+    {
+            subMenu= child.map(el=>{
+             if(props.main[el].type==="file") 
+             return null;
+
+             let val={
+                 key:{el},
+                ...props.main[el],
+                main:props.main,
+                id:el,
+                clicked:props.clicked
+             }
+             return element(val)
+         })
+    }
+    return (
+
+        <div key={props.id}>
+      <div className="content">
+    <p > {props.name}</p>
+        {showArrow>0? props.show?<div onClick={clickHandler} className='arrow-up' ></div>
+        :<div onClick={clickHandler} className='arrow-down' ></div> :null        }  
+      </div>
+     {subMenu?<div className="sub-menu">
+      {subMenu}</div>:null}
+             </div>
+    )
+}
+
+
+export default element;

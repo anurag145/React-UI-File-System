@@ -17,3 +17,22 @@ export const enterPath=(value)=>{
         value:value
     }
 }
+
+export const deleteItem=(Id)=>{
+return{
+    type:actionTypes.DELETE,
+    Id:Id
+}
+}
+export const search=(val)=>{
+    return{
+        type:actionTypes.SEARCH,
+        val:val.trim()
+    }
+}
+export const showSubMenu=(Id)=>{
+    return{
+        type:actionTypes.SHOW_SUB_MENU,
+        Id:Id
+    }
+}

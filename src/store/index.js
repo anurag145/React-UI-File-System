@@ -1,1 +1,1 @@
-export {addItem,enterPath,upOneDirectory}from './action'
+export {addItem,enterPath,upOneDirectory,deleteItem,showSubMenu,search}from './action'
