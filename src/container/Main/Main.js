@@ -11,20 +11,27 @@ upOneDirectory=()=>{
     
     this.props.goUpOneDirectory();
 }
-
+changeDirectory=(event)=>{
+    this.props.directory(event.target.id)
+    }
 onKeyUpHandler=(event)=>{
+    console.log(event.target.id);
   this.props.search(event.target.value);
 }
 
     render(){
+        console.log(this.props.main)
         return(
          <div style={{display:'flex'}}>
         <QuickAccess />
         <div className="content3" >
          <TopBar main={this.props.main}
           clicked={this.upOneDirectory} 
-          listener={this.onKeyUpHandler}/>
-          <div style={{margin:"50px 0 0 50px"}}>
+          listener={this.onKeyUpHandler}
+          value={this.props.main.searchValue}
+          change={this.changeDirectory}
+          />
+          <div style={{marginTop:"30px"}}>
              <Display />
          </div>
          </div>
@@ -45,7 +52,9 @@ const mapStateToProps=state=>{
 const mapDispatchToProps= dispatch=>{
     return{
         goUpOneDirectory:()=>dispatch(actions.upOneDirectory()),
-        search:(val)=>dispatch(actions.search(val))
+        search:(val)=>dispatch(actions.search(val)),
+        directory:(Id)=>dispatch(actions.changeDirectory(Id))
+     
     };
 };
 

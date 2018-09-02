@@ -2,42 +2,34 @@ import React from 'react';
 import './TopBar.css'
 const topBar=(props)=>{
     let path=props.main.pathDisplay.split("/");
-
-    let pathDisplay=[];
+    let pathDisplay=[];let val={style:{color:'#9d9d9e',cursor:'pointer'},slash:" / "};
     for(let i =0;i<path.length;i++)
-       {   let style={color:'#9d9d9e'}  
-            let val="";
-             if(i===0){
-               val="root"
-             }else{
-
-                val=props.main[path[i]].name;
-             }
-
-           if(i===path.length-1)
-           {
-               style={color:'#525659'};
-               pathDisplay.push(
-                <span key={i} style={style}>{val}</span>
-                
-              )
-              continue;
+       {   
+             if(i===path.length-1)
+           {     val.style.color='#525659'
+                 val.slash=""
            }
               pathDisplay.push(
-                <span key={i} style={style}>{val} / </span>
+                <span id={path[i]} key={path[i]}
+                 style={val.style} onClick={(event)=>props.change(event)}>
+                 {props.main[path[i]].name}{val.slash}</span>
               )
        }
-
-      pathDisplay.join(" / ") 
     return (
-        <div className={"TopBar"} >
-             <i className="fa fa-arrow-circle-up fa-2x" onClick={props.clicked}></i>
-          <div className={'Path'}> 	  {pathDisplay}</div>
-          <div style={{marginLeft:"100px"}}>
-           <span style={{marginTop:'1px'}}role="img" aria-label="search-icon"> &#128269;</span>
-          <input type="text" placeholder={'Search for anything'} onKeyUp={(event)=>props.listener(event)}/>
+        <div id={"TopBar"} >
+     
+             <i id={"up"} className="fa fa-arrow-circle-up fa-2x" onClick={props.clicked}></i>
+          <div className={'Path'}> 	  {pathDisplay}
+          </div>
+          <div id={"search"}>
+  
+          <input id={"input"} type="text" placeholder={'Search for anything'} 
+          value={props.value} 
+          
+          onChange={(event)=>props.listener(event)}/>
           </div>
         </div>
     );
 }
+
 export default topBar;

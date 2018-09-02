@@ -4,44 +4,45 @@ import Items from '../../component/DisplayItems/Items/Items';
 import AddItem from '../../component/DisplayItems/AddItem';
 import Modal from '../../component/Modal/Modal';
 import AddContent from '../AddContent/AddContent';
+import Info from '../Info/Info';
 import * as actions from '../../store/index';
 import './Display.css';
 class Display extends Component{
 state={
     0:"root",
     show:false,
-    type:"info"
+    displayModal:null
 }
 //functions 
 infoModal=(val)=>{
-console.log(val);
+    this.setState({
+        show:true,
+          displayModal:<Info id={val} clicked={this.onCancelModal}/>
+    })
 }
 
 removeItem=(val)=>{
-    console.log(val);
+  
     this.props.remove(val);
 }
 onCancelModal=()=>{
     
-    this.setState({show:false})
+    this.setState({show:false,displayModal:null})
 }
  onDoubleClickHandler=(Id)=>{
-     console.log(Id);
+    
      this.props.handleDoubleClick(Id);
  }
  onAddClickHandler=()=>{
      
-    this.setState({show:true,type:"addFile"})
+    this.setState({
+        show:true,
+        displayModal:<AddContent parent={this.props.parent} clicked={this.onCancelModal}/>
+    })
  }   
     render(){
-     console.log(this.props.main)
-         let displayModal=null;
-         if(this.state.show){
-             if(this.state.type==='addFile')
-             {
-                 displayModal= <AddContent parent={this.props.parent} clicked={this.onCancelModal}/>;
-                   }
-         }
+     
+        
         let val =this.props.display;
      
         const items= [];
@@ -71,7 +72,7 @@ onCancelModal=()=>{
 
 
             <div>  
-             <Modal show={this.state.show}>{displayModal}</Modal>
+             <Modal show={this.state.show}>{this.state.displayModal}</Modal>
             <div className='content2' >
              {items}
              <AddItem clicked={this.onAddClickHandler}/>   

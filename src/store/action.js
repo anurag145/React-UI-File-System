@@ -36,3 +36,11 @@ export const showSubMenu=(Id)=>{
         Id:Id
     }
 }
+
+export const changeDirectory=(Id)=>{
+    return{
+        type:actionTypes.CHANGE_DIRECTORY,
+        Id:Id,
+        
+    }
+}

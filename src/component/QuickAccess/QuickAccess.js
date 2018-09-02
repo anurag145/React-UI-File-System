@@ -8,12 +8,16 @@ class  QuickAccess extends Component{
     arrowClicked=(Id)=>{
     this.props.handler(Id);
 }
+changeDirectory=(Id)=>{
+    
+this.props.directory(Id)
+}
     render(){
         let folder = this.props.rootList;
     return(
     <div className='QuickAccess'>
-    <div className='content4'>
-    <p key={'root'}>Root</p>
+    
+    <p style={{marginLeft:"30px",fontSize:"15px",color:'#cecfd3'}}onClick={()=>this.changeDirectory("root")} key={'root'}><b>ROOT</b></p>
         <div>
           {  
         folder.map(el=>{
@@ -23,7 +27,11 @@ class  QuickAccess extends Component{
             ...this.props.state[el],
             main:this.props.state,
             id:el,
-            clicked:this.arrowClicked
+            sub:false,
+            pMargin:0,
+            clicked:this.arrowClicked,
+            changeDirectory:this.changeDirectory,
+           
             }
            return QuickAccessElement(val)
             } 
@@ -33,20 +41,21 @@ class  QuickAccess extends Component{
         })
        }
         </div>
-    </div>
+    
     </div>
     );
     }
 } 
 const mapStateToProps= state=>{
     return {
-        rootList: state.rootList,
+        rootList: state.root.list,
         state:state
     }
 }
 const mapDispatchToProps=dispatch=>{
     return{
-        handler:(Id)=>dispatch(actions.showSubMenu(Id))
+        handler:(Id)=>dispatch(actions.showSubMenu(Id)),
+        directory:(Id)=>dispatch(actions.changeDirectory(Id))
     }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(QuickAccess);

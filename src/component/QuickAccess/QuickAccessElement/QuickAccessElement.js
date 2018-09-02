@@ -2,12 +2,20 @@ import React from 'react';
 import './QuickAccessElement.css';
 
 const element=(props)=>{
+const selected=props.main.selected===props.id?{backgroundColor:"#eeeff1"}:{};
+const sub=props.sub?'sub-menu':'content';
+
+
+
+const pStyle=props.sub?{ boxShadow: "-1px 0 rgba(0,0,0,0.2)",paddingLeft:"5px",marginLeft:props.pMargin.toString()+"px"}:{}
 
 const clickHandler=()=>{
  
     props.clicked(props.id);
 }
-
+const select=()=>{
+props.changeDirectory(props.id)
+}
     const child=props.list;
     let subMenu=null;
     let showArrow=child.length;
@@ -16,27 +24,35 @@ const clickHandler=()=>{
             subMenu= child.map(el=>{
              if(props.main[el].type==="file") 
              return null;
-
+             
              let val={
                  key:{el},
                 ...props.main[el],
                 main:props.main,
                 id:el,
-                clicked:props.clicked
+                pMargin:props.pMargin+15,
+                sub:true,
+                clicked:props.clicked,
+                changeDirectory:props.changeDirectory,
+            
              }
              return element(val)
          })
     }
     return (
 
-        <div key={props.id}>
-      <div className="content">
-    <p > {props.name}</p>
-        {showArrow>0? props.show?<div onClick={clickHandler} className='arrow-up' ></div>
-        :<div onClick={clickHandler} className='arrow-down' ></div> :null        }  
+        <div key={props.id}  >
+        <div style={selected}>
+      <div id={sub} >
+    <p style={pStyle} onClick={select}> {props.name}</p>
+        {showArrow>0? props.show?<div style={{marginLeft:"10px"}} onClick={clickHandler} className='arrow-up' ></div>
+        :<div onClick={clickHandler} 
+        style={{marginLeft:"10px"}}
+        className='arrow-down' ></div> :null        }  
       </div>
-     {subMenu?<div className="sub-menu">
-      {subMenu}</div>:null}
+      </div>
+     {subMenu?
+      subMenu:null}
              </div>
     )
 }

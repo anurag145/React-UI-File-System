@@ -7,7 +7,7 @@
     cursor: pointer;
     border-radius: 5px;
     color: #c3c5c9;
-    margin: 5px 0 100px 0;
+    margin: 5px 0 100px 15px;
 }
 .AddItemSign{
     display: flex;

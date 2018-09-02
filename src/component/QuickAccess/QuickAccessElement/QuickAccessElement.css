@@ -1,11 +1,18 @@
-.content{
- margin:5px 15px 0px 30px;
+#content{
+ margin:5px 15px 5px 20px;
  display: flex;
  justify-content: space-between;
  align-items: center;
 
 }
-
+@media  (max-width:600){
+  #content{
+    margin:5px 15px 5px 5px;
+  }
+}
+.selected{
+  background-color: #eeeff1
+}
 .arrow-down {
  
     
@@ -14,21 +21,18 @@
     border-top: 8px solid #2c3339;
   }
 
-  .sub-menu{
-    
+  #sub-menu{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     width:auto;
     height: auto;
     padding-left: 5px;
-    margin: -20px 0 0 35px;  
-   
-    box-shadow: -1px 0 rgba(0,0,0,0.2);
+    margin: -20px 15px 5px 35px;  
   }
   
   .arrow-up{
-    width: 0; 
-    height: 0; 
-   
-   
+  
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
     border-bottom: 8px solid #2c3339;
