@@ -15,12 +15,12 @@ changeDirectory=(event)=>{
     this.props.directory(event.target.id)
     }
 onKeyUpHandler=(event)=>{
-    console.log(event.target.id);
+  
   this.props.search(event.target.value);
 }
 
     render(){
-        console.log(this.props.main)
+      
         return(
          <div style={{display:'flex'}}>
         <QuickAccess />

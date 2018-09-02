@@ -41,10 +41,10 @@ props.changeDirectory(props.id)
     }
     return (
 
-        <div key={props.id}  >
-        <div style={selected}>
+        <div key={props.id} style={{cursor:"pointer"}}   >
+        <div style={selected} onClick={select}>
       <div id={sub} >
-    <p style={pStyle} onClick={select}> {props.name}</p>
+    <p style={pStyle} > {props.name}</p>
         {showArrow>0? props.show?<div style={{marginLeft:"10px"}} onClick={clickHandler} className='arrow-up' ></div>
         :<div onClick={clickHandler} 
         style={{marginLeft:"10px"}}
